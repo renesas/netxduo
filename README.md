@@ -61,6 +61,10 @@ NetX Duo includes [Azure IoT Middleware for Azure RTOS](https://github.com/azure
 
 Additional APIs supporting Azure IoT Plug and Play can be found on the [feature/iot_pnp](https://github.com/azure-rtos/netxduo/tree/v6.1_beta.1) branch, with sample projects in the [Beta Release](https://github.com/azure-rtos/netxduo/releases/tag/v6.1_beta.1).
 
+## Device Update
+
+The Azure IoT Middleware for Azure RTOS provides module that let device builders easily enable the [Device Update for IoT Hub](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update) for the over-the-air (OTA) updates solution. Additional APIs, docs and sample projects can be found on the [feature/adu](https://aka.ms/azrtos-device-update-preview) branch.
+
 # Security
 
 Azure RTOS provides OEMs with components to secure communication and to create code and data isolation using underlying 

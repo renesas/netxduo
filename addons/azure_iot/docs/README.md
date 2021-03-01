@@ -56,6 +56,14 @@ Enhanced features provided in middleware:
 * Device Provisioning Service.
 * JSON parser.
 
+## Device Update for IoT Hub module
+
+The [Device Update for IoT Hub](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update) (public preview) is a service that enables you to deploy over-the-air updates (OTA) for your IoT devices. The Device Update for IoT Hub module is the implementation of [Device Update for IoT Hub Agent](./azure_rtos_iot_adu_agent.md) in Azure RTOS NetX Duo. It provides simple APIs for device builders to integrate the Device Update capability in their application.
+
+See the [samples](https://github.com/azure-rtos/samples/tree/PublicPreview/ADU) of key semiconductors evaluation boards that include the get started guides to learn configure, build and deploy the over-the-air (OTA) updates to the devices.
+
+And you can learn more details about the [Device Update for IoT Hub service](https://docs.microsoft.com/azure/iot-hub-device-update/understand-device-update).
+
 ## Azure Defender for IoT security module
 
 The [Azure Defender for IoT security module](https://docs.microsoft.com/azure/defender-for-iot/iot-security-azure-rtos) provides a comprehensive security solution for Azure RTOS devices. The middleware ships with the ASC for IoT Security Module built-in and enabled by default to detect common threats and potential malicious activities.
@@ -108,6 +116,7 @@ Learn [here](https://docs.microsoft.com/en-us/azure/defender-for-iot) for more i
 * [nx_azure_iot_hub_client](./azure_rtos_iot_hub_client.md)
 * [nx_azure_iot_provisioning_client](./azure_rtos_iot_provisioning_client.md)
 * [nx_azure_iot_json](./azure_rtos_iot_json.md)
+* [nx_azure_iot_adu_agent](./azure_rtos_iot_adu_agent.md)
 * [nx_azure_iot_security_module](../azure_iot_security_module/docs/nx_azure_iot_security_module.md)
 
 ## Need Help?

@@ -9,7 +9,7 @@
 /*                                                                        */
 /**************************************************************************/
 
-/* Version: 6.1 */
+/* Version: 6.1 ADU Preview 1 */
 
 #include "nx_azure_iot.h"
 #ifndef NX_AZURE_DISABLE_IOT_SECURITY_MODULE
@@ -170,14 +170,6 @@ static VOID nx_azure_iot_log_listener(az_log_classification classification, az_s
 
 VOID nx_azure_iot_log_init(VOID(*log_callback)(az_log_classification classification, UCHAR *msg, UINT msg_len))
 {
-static az_log_classification const classifications[] = {AZ_LOG_IOT_AZURERTOS,
-                                                        AZ_LOG_MQTT_RECEIVED_TOPIC,
-                                                        AZ_LOG_MQTT_RECEIVED_PAYLOAD,
-                                                        AZ_LOG_IOT_RETRY,
-                                                        AZ_LOG_IOT_SAS_TOKEN,
-                                                        _az_LOG_END_OF_LIST};
-
-    _az_log_set_classifications(classifications);
     _nx_azure_iot_log_callback = log_callback;
     az_log_set_message_callback(nx_azure_iot_log_listener);
 }
@@ -713,7 +705,7 @@ UINT nx_azure_iot_unix_time_get(NX_AZURE_IOT *nx_azure_iot_ptr, ULONG *unix_time
     return(nx_azure_iot_ptr -> nx_azure_iot_unix_time_get(unix_time));
 }
 
-static UINT nx_azure_iot_base64_decode(CHAR *base64name, UINT length, UCHAR *name, UINT name_size, UINT *bytes_copied)
+UINT nx_azure_iot_base64_decode(CHAR *base64name, UINT length, UCHAR *name, UINT name_size, UINT *bytes_copied)
 {
 UINT    i, j;
 UINT    value1, value2;
@@ -754,9 +746,11 @@ UINT    sourceLength = length;
             value1 =  (UINT) (base64name[i] - 'a') + 26;
         else if ((base64name[i] >= '0') && (base64name[i] <= '9'))
             value1 =  (UINT) (base64name[i] - '0') + 52;
-        else if (base64name[i] == '+')
+        else if ((base64name[i] == '+') ||
+                 (base64name[i] == '-')) /* Base64 URL.  */
             value1 =  62;
-        else if (base64name[i] == '/')
+        else if ((base64name[i] == '/') ||
+                 (base64name[i] == '_')) /* Base64 URL.  */
             value1 =  63;
         else
             value1 =  0;
@@ -768,9 +762,11 @@ UINT    sourceLength = length;
             value2 =  (UINT) (base64name[i+1] - 'a') + 26;
         else if ((base64name[i+1] >= '0') && (base64name[i+1] <= '9'))
             value2 =  (UINT) (base64name[i+1] - '0') + 52;
-        else if (base64name[i+1] == '+')
+        else if ((base64name[i+1] == '+') ||
+                 (base64name[i+1] == '-')) /* Base64 URL.  */
             value2 =  62;
-        else if (base64name[i+1] == '/')
+        else if ((base64name[i+1] == '/') ||
+                 (base64name[i+1] == '_')) /* Base64 URL.  */
             value2 =  63;
         else
             value2 =  0;
@@ -1023,6 +1019,61 @@ UINT binary_key_buf_size;
 
     *output_pptr = (UCHAR *)(encoded_hash_buf);
     *output_len_ptr = strlen(encoded_hash_buf);
+
+    return(NX_AZURE_IOT_SUCCESS);
+}
+
+UINT nx_azure_iot_topic_property_append(NX_PACKET *packet_ptr,
+                                        const UCHAR *property_name, USHORT property_name_length,
+                                        const UCHAR *property_value, USHORT property_value_length,
+                                        UINT wait_option)
+{
+UINT status;
+
+    if ((packet_ptr == NX_NULL) ||
+        (property_name == NX_NULL) ||
+        (property_value == NX_NULL))
+    {
+        LogError(LogLiteralArgs("Property append failed: INVALID POINTER"));
+        return(NX_AZURE_IOT_INVALID_PARAMETER);
+    }
+
+    if (*(packet_ptr -> nx_packet_append_ptr - 1) != '/')
+    {
+        status = nx_packet_data_append(packet_ptr, "&", 1,
+                                       packet_ptr -> nx_packet_pool_owner,
+                                       wait_option);
+        if (status)
+        {
+            LogError(LogLiteralArgs("Property append of & failed"));
+            return(status);
+        }
+    }
+
+    status = nx_packet_data_append(packet_ptr, (VOID *)property_name, (UINT)property_name_length,
+                                   packet_ptr -> nx_packet_pool_owner, wait_option);
+    if (status)
+    {
+        LogError(LogLiteralArgs("Property name append failed"));
+        return(status);
+    }
+
+    status = nx_packet_data_append(packet_ptr, "=", 1,
+                                   packet_ptr -> nx_packet_pool_owner,
+                                   wait_option);
+    if (status)
+    {
+        LogError(LogLiteralArgs("Property append of = failed"));
+        return(status);
+    }
+
+    status = nx_packet_data_append(packet_ptr, (VOID *)property_value, (UINT)property_value_length,
+                                   packet_ptr -> nx_packet_pool_owner, wait_option);
+    if (status)
+    {
+        LogError(LogLiteralArgs("Property value append failed"));
+        return(status);
+    }
 
     return(NX_AZURE_IOT_SUCCESS);
 }
