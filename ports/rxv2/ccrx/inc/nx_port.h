@@ -26,7 +26,7 @@
 /*  PORT SPECIFIC C INFORMATION                            RELEASE        */ 
 /*                                                                        */ 
 /*    nx_port.h                                           RXv2/CCRX       */ 
-/*                                                           6.1.11       */
+/*                                                           6.2.1        */
 /*                                                                        */
 /*  AUTHOR                                                                */
 /*                                                                        */
@@ -46,6 +46,9 @@
 /*  04-25-2022     Yuxin Zhou               Modified comment(s), and      */
 /*                                            renamed temporary variable, */
 /*                                            resulting in version 6.1.11 */
+/*  03-08-2023     Yajun Xia                Modified comment(s),          */
+/*                                            removed duplicated macros,  */
+/*                                            resulting in version 6.2.1  */
 /*                                                                        */
 /**************************************************************************/
 
@@ -68,16 +71,6 @@
 
 #define NX_LITTLE_ENDIAN    1
 
-
-/* By default IPv6 is enabled. */
-
-#ifndef FEATURE_NX_IPV6
-#define FEATURE_NX_IPV6
-#endif /* FEATURE_NX_IPV6 */
-
-#ifdef NX_DISABLE_IPV6 
-#undef FEATURE_NX_IPV6 
-#endif /* !NX_DISABLE_IPV6 */
 
 #include <stdio.h>
 #include <string.h>
@@ -215,7 +208,7 @@
 
 #ifdef NX_SYSTEM_INIT
 CHAR                            _nx_version_id[] = 
-                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  NetX Duo RXv2/CCRX Version 6.2.0 *";
+                                    "Copyright (c) Microsoft Corporation. All rights reserved.  *  NetX Duo RXv2/CCRX Version 6.2.1 *";
 #else
 extern  CHAR                    _nx_version_id[];
 #endif
