@@ -66,7 +66,7 @@ extern   "C" {
 
 /* Max Elliptic-curve Diffie-Hellman key size. Buffer size for calculations is 4X the key size */
 #ifndef NX_CRYPTO_ECDH_MAX_KEY_SIZE
-#define NX_CRYPTO_ECDH_MAX_KEY_SIZE     (80)  /* Buffer size is increased to accomodate OEM keys */
+#define NX_CRYPTO_ECDH_MAX_KEY_SIZE     (68)
 #endif
 #ifndef NX_CRYPTO_ECDH_SCRATCH_BUFFER_SIZE
 #define NX_CRYPTO_ECDH_SCRATCH_BUFFER_SIZE 2464
