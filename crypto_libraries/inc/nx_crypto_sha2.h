@@ -69,24 +69,29 @@ extern   "C" {
 #define NX_CRYPTO_SHA224_ICV_LEN_IN_BITS    224
 #define NX_CRYPTO_SHA256_ICV_LEN_IN_BITS    256
 
+#ifndef NX_SHA_USER_CONTEXT_BUFFER
+#define NX_SHA_USER_CONTEXT_BUFFER          1
+#endif
 /* Define the control block structure for backward compatibility. */
 #define NX_SHA256                               NX_CRYPTO_SHA256
 
 typedef struct NX_CRYPTO_SHA256_STRUCT
 {
 
-    ULONG nx_sha256_states[8];                          /* Contains each state (A,B,C,D,E,F,G,H).   */
-    ULONG nx_sha256_bit_count[2];                       /* Contains the 64-bit total bit            */
-                                                        /*   count, where index 0 holds the         */
-                                                        /*   least significant bit count and        */
-                                                        /*   index 1 contains the most              */
-                                                        /*   significant portion of the bit         */
-                                                        /*   count.                                 */
-    UCHAR nx_sha256_buffer[64];                         /* Working buffer for SHA256 algorithm      */
-                                                        /*   where partial buffers are              */
-                                                        /*   accumulated until a full block         */
-                                                        /*   can be processed.                      */
-    ULONG nx_sha256_word_array[64];                     /* Working 64 word array.                   */
+    ULONG nx_sha256_states[8];                                /* Contains each state (A,B,C,D,E,F,G,H).   */
+    ULONG nx_sha256_bit_count[2];                             /* Contains the 64-bit total bit            */
+                                                              /*   count, where index 0 holds the         */
+                                                              /*   least significant bit count and        */
+                                                              /*   index 1 contains the most              */
+                                                              /*   significant portion of the bit         */
+                                                              /*   count.                                 */
+    UCHAR nx_sha256_buffer[64];                               /* Working buffer for SHA256 algorithm      */
+                                                              /*   where partial buffers are              */
+                                                              /*   accumulated until a full block         */
+                                                              /*   can be processed.                      */
+    ULONG nx_sha256_word_array[64];                           /* Working 64 word array.                   */
+
+    UCHAR nx_sha256_user_context[NX_SHA_USER_CONTEXT_BUFFER];
 } NX_CRYPTO_SHA256;
 
 
